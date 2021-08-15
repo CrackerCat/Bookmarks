@@ -1,6 +1,7 @@
 package burp
 
 import java.awt.FlowLayout
+import java.util.*
 import javax.swing.*
 
 class BookmarkOptions(
@@ -67,23 +68,25 @@ class BookmarkOptions(
         }
     }
 
-    fun searchBookmarks() {
+    private fun searchBookmarks() {
         val selectedTag = tagComboBox.selectedItem
         SwingUtilities.invokeLater {
-            val searchText = filterBar.text.toLowerCase()
+            val searchText = filterBar.text.lowercase(Locale.getDefault())
             var filteredBookmarks = this.bookmarksPanel.bookmarks
             filteredBookmarks = filterTags(filteredBookmarks)
             if (searchText.isNotEmpty()) {
                 filteredBookmarks = filteredBookmarks
                     .filter {
-                        it.comments.toLowerCase().contains(searchText) ||
-                                it.url.toString().toLowerCase().contains(searchText) ||
-                                callbacks.helpers.bytesToString(it.requestResponse.request).toLowerCase().contains(
-                                    searchText
-                                ) ||
+                        it.comments.lowercase(Locale.getDefault()).contains(searchText) ||
+                                it.url.toString().lowercase(Locale.getDefault()).contains(searchText) ||
+                                callbacks.helpers.bytesToString(it.requestResponse.request)
+                                    .lowercase(Locale.getDefault())
+                                    .contains(
+                                        searchText
+                                    ) ||
                                 callbacks.helpers.bytesToString(
                                     it.requestResponse.response ?: ByteArray(0)
-                                ).toLowerCase().contains(
+                                ).lowercase(Locale.getDefault()).contains(
                                     searchText
                                 )
                     }.toMutableList()

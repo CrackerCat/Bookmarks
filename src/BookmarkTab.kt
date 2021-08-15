@@ -98,9 +98,9 @@ class BookmarksPanel(private val callbacks: IBurpExtenderCallbacks) {
         repeatInTable.isSelected = true
 
         requestPanel.layout = BoxLayout(requestPanel, BoxLayout.X_AXIS)
-        requestPanel.add( Box.createHorizontalStrut(20) );
+        requestPanel.add(Box.createHorizontalStrut(20))
         requestPanel.add(requestText)
-        requestPanel.add( Box.createHorizontalStrut(20) );
+        requestPanel.add(Box.createHorizontalStrut(20))
         requestPanel.add(repeatButton)
         requestPanel.add(repeatInTable)
         requestPanel.add(requestViewer?.component)
@@ -109,7 +109,7 @@ class BookmarksPanel(private val callbacks: IBurpExtenderCallbacks) {
         responsePanel.layout = BoxLayout(responsePanel, BoxLayout.X_AXIS)
         val responseText = JLabel("Response")
         responseText.font = Font(Font.DIALOG, Font.BOLD, 18)
-        responsePanel.add( Box.createHorizontalStrut(20) );
+        responsePanel.add(Box.createHorizontalStrut(20))
         responsePanel.add(responseText)
 
         val resSplitVert = JSplitPane(JSplitPane.VERTICAL_SPLIT, responsePanel, responseViewer?.component)
@@ -163,7 +163,7 @@ class BookmarksPanel(private val callbacks: IBurpExtenderCallbacks) {
         val file = requestInfo?.url?.file ?: ""
         val parameters =
             !requestInfo.parameters.filter { it.type != IParameter.PARAM_COOKIE }
-                .isNullOrEmpty() || !requestInfo.url.query.isNullOrEmpty()
+                .isEmpty() || !requestInfo.url.query.isNullOrEmpty()
         val comments = requestResponse.comment ?: ""
         val bookmark = Bookmark(
             savedRequestResponse,
@@ -223,7 +223,7 @@ class MessageEditor(callbacks: IBurpExtenderCallbacks) : IMessageEditorControlle
     val requestViewer: IMessageEditor? = callbacks.createMessageEditor(this, true)
     val responseViewer: IMessageEditor? = callbacks.createMessageEditor(this, false)
 
-    override fun getResponse(): ByteArray? = requestResponse?.response ?: ByteArray(0)
+    override fun getResponse(): ByteArray = requestResponse?.response ?: ByteArray(0)
 
     override fun getRequest(): ByteArray? = requestResponse?.request
 

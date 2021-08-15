@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package burp
 
 class BurpExtender : IBurpExtender {

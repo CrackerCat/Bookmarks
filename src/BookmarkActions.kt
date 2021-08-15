@@ -5,6 +5,7 @@ import java.awt.datatransfer.Clipboard
 import java.awt.datatransfer.StringSelection
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
+import java.util.*
 import javax.swing.JMenu
 import javax.swing.JMenuItem
 import javax.swing.JOptionPane
@@ -150,7 +151,7 @@ class BookmarkActions(
     }
 
     private fun useHTTPs(bookmark: Bookmark): Boolean {
-        return (bookmark.url.protocol.toLowerCase() == "https")
+        return (bookmark.url.protocol.lowercase(Locale.getDefault()) == "https")
 
     }
 }
