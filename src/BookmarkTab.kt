@@ -6,12 +6,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.swing.Swing
 import kotlinx.coroutines.withContext
 import java.awt.FlowLayout
+import java.awt.Font
 import java.net.URL
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.swing.*
 import javax.swing.table.AbstractTableModel
 import javax.swing.table.TableRowSorter
+
 
 class BookmarkTab(callbacks: IBurpExtenderCallbacks) : ITab {
     val bookmarkTable = BookmarksPanel(callbacks)
@@ -88,28 +90,42 @@ class BookmarksPanel(private val callbacks: IBurpExtenderCallbacks) {
             }
         }
 
-        val repeatPanel = JPanel(FlowLayout(FlowLayout.LEFT))
-
+        val requestPanel = JPanel(FlowLayout(FlowLayout.LEFT))
+        val requestText = JLabel("Request")
+        requestText.font = Font(Font.DIALOG, Font.BOLD, 18)
         val repeatButton = JButton("Repeat Request")
         repeatButton.addActionListener { repeatRequest() }
         repeatInTable.isSelected = true
 
-        repeatPanel.add(repeatButton)
-        repeatPanel.add(repeatInTable)
+        requestPanel.layout = BoxLayout(requestPanel, BoxLayout.X_AXIS)
+        requestPanel.add( Box.createHorizontalStrut(20) );
+        requestPanel.add(requestText)
+        requestPanel.add( Box.createHorizontalStrut(20) );
+        requestPanel.add(repeatButton)
+        requestPanel.add(repeatInTable)
+        requestPanel.add(requestViewer?.component)
+
+        val responsePanel = JPanel(FlowLayout(FlowLayout.LEFT))
+        responsePanel.layout = BoxLayout(responsePanel, BoxLayout.X_AXIS)
+        val responseText = JLabel("Response")
+        responseText.font = Font(Font.DIALOG, Font.BOLD, 18)
+        responsePanel.add( Box.createHorizontalStrut(20) );
+        responsePanel.add(responseText)
+
+        val resSplitVert = JSplitPane(JSplitPane.VERTICAL_SPLIT, responsePanel, responseViewer?.component)
+        val reqSplitVert = JSplitPane(JSplitPane.VERTICAL_SPLIT, requestPanel, requestViewer?.component)
+
 
         val bookmarksTable = JScrollPane(table)
         val reqResSplit =
-            JSplitPane(JSplitPane.HORIZONTAL_SPLIT, requestViewer?.component, responseViewer?.component)
+            JSplitPane(JSplitPane.HORIZONTAL_SPLIT, reqSplitVert, resSplitVert)
         reqResSplit.resizeWeight = 0.5
-
-        val repeatReqSplit =
-            JSplitPane(JSplitPane.VERTICAL_SPLIT, repeatPanel, reqResSplit)
 
         val bookmarksOptSplit =
             JSplitPane(JSplitPane.VERTICAL_SPLIT, bookmarkOptions.panel, bookmarksTable)
 
         panel.topComponent = bookmarksOptSplit
-        panel.bottomComponent = repeatReqSplit
+        panel.bottomComponent = reqResSplit
         panel.resizeWeight = 0.5
         callbacks.customizeUiComponent(panel)
     }
