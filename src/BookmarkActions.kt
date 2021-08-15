@@ -22,7 +22,6 @@ class BookmarkActions(
     private val sendToIntruder = JMenuItem("Send request(s) to Intruder")
     private val copyURLs = JMenuItem("Copy URL(s)")
     private val deleteMenu = JMenuItem("Delete Bookmark(s)")
-    private val clearMenu = JMenuItem("Clear Bookmarks")
     private val addTag = JMenu("Add Tag")
     private val existingTagsMenu = JMenu("Existing Tags")
     private val newTag = JMenuItem("New Tag")
@@ -33,13 +32,11 @@ class BookmarkActions(
         sendToIntruder.addActionListener(this)
         copyURLs.addActionListener(this)
         deleteMenu.addActionListener(this)
-        clearMenu.addActionListener(this)
         actionsMenu.add(sendToRepeater)
         actionsMenu.add(sendToIntruder)
         actionsMenu.add(copyURLs)
         actionsMenu.addSeparator()
         actionsMenu.add(deleteMenu)
-        actionsMenu.add(clearMenu)
         actionsMenu.addSeparator()
         newTag.addActionListener(this)
         comments.addActionListener(this)
@@ -60,11 +57,6 @@ class BookmarkActions(
         when (val source = e?.source) {
             deleteMenu -> {
                 panel.model.removeBookmarks(selectedBookmarks)
-            }
-            clearMenu -> {
-                panel.model.clearBookmarks()
-                panel.requestViewer?.setMessage(ByteArray(0), true)
-                panel.responseViewer?.setMessage(ByteArray(0), false)
             }
             copyURLs -> {
                 val urls = selectedBookmarks.map { it.url }.joinToString()
