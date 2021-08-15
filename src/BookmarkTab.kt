@@ -102,6 +102,7 @@ class BookmarksPanel(private val callbacks: IBurpExtenderCallbacks) {
         requestPanel.add(requestText)
         requestPanel.add(Box.createHorizontalStrut(20))
         requestPanel.add(repeatButton)
+        requestPanel.add(Box.createHorizontalStrut(10))
         requestPanel.add(repeatInTable)
         requestPanel.add(requestViewer?.component)
 
